@@ -11,4 +11,9 @@ async def read_dashboard(request: Request):
         "status": "System Online - Awaiting API", 
         "message": "Welcome to the Kestrel Data prototype."
     }
-    return templates.TemplateResponse("dashboard.html", {"request": request, "data": mock_data})
+   
+    return templates.TemplateResponse(
+        request=request, 
+        name="dashboard.html", 
+        context={"data": mock_data}
+    )
