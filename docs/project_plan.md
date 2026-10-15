@@ -1,3 +1,4 @@
+
 # Project Plan
 ##  Executive Summary: 
 This project is all about building a dashboard for Kestrel Data, where they can just open their browser and the dashboard does the job of pulling in the live weather data, calculates risk and flags any problematic routes. Currently the logistics consultants are spending a huge portion of their time to manually check the weather and figure out if any route is probably going to be delayed. This system helps the team make faster and safer decisions about where to route their freight. 
