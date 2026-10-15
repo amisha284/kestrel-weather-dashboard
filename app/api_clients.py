@@ -1,5 +1,6 @@
 """Small API clients for location lookup and current weather."""
 
+import math
 import os
 
 import requests
@@ -7,6 +8,39 @@ import requests
 
 class APIError(Exception):
     """An API problem that can be explained to the user."""
+
+
+def validate_weather(data):
+    """Check the weather fields used by the clients, scoring and formatting."""
+    try:
+        temperature = data["main"]["temp"]
+        wind_speed = data["wind"]["speed"]
+        conditions = data["weather"]
+        rain = data.get("rain", {})
+        if not isinstance(conditions, list) or not conditions or not isinstance(rain, dict):
+            raise ValueError
+
+        numbers = [temperature, wind_speed]
+        if "1h" in rain:
+            numbers.append(rain["1h"])
+        if "dt" in data:
+            numbers.append(data["dt"])
+        for value in numbers:
+            if type(value) not in (int, float) or not math.isfinite(value):
+                raise ValueError
+        if wind_speed < 0 or rain.get("1h", 0) < 0:
+            raise ValueError
+
+        for condition in conditions:
+            if (
+                not isinstance(condition, dict)
+                or type(condition["id"]) is not int
+                or not isinstance(condition["description"], str)
+                or not condition["description"].strip()
+            ):
+                raise ValueError
+    except (KeyError, IndexError, TypeError, ValueError, OverflowError):
+        raise APIError("OpenWeatherMap returned incomplete or invalid weather data.") from None
 
 
 class BaseClient:
@@ -114,17 +148,5 @@ class WeatherClient(BaseClient):
             "https://api.openweathermap.org/data/2.5/weather",
             {"lat": latitude, "lon": longitude, "appid": self._credential, "units": "metric"},
         )
-        try:
-            temperature = data["main"]["temp"]
-            wind_speed = data["wind"]["speed"]
-            description = data["weather"][0]["description"]
-            if (
-                type(temperature) not in (int, float)
-                or type(wind_speed) not in (int, float)
-                or not isinstance(description, str)
-                or not description.strip()
-            ):
-                raise ValueError
-        except (KeyError, IndexError, TypeError, ValueError):
-            raise APIError("OpenWeatherMap returned incomplete or invalid weather data.") from None
+        validate_weather(data)
         return data

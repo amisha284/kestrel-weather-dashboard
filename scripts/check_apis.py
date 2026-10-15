@@ -5,29 +5,31 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from app.api_clients import APIError, MapboxClient, WeatherClient
+from app.api_clients import APIError
+from app.weather_analysis import get_weather_report
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Check both Kestrel API integrations.")
+    parser = argparse.ArgumentParser(description="Check the Kestrel weather and risk report.")
     parser.add_argument("location", help="Location name, for example 'Perth, Australia'")
     args = parser.parse_args()
     load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
     try:
-        # Validate both keys before making any paid or rate-limited requests.
-        mapbox = MapboxClient()
-        weather_client = WeatherClient()
-        location = mapbox.geocode(args.location)
-        weather = weather_client.get_weather(location["latitude"], location["longitude"])
+        report = get_weather_report(args.location)
     except APIError as error:
         parser.exit(1, f"API check failed: {error}\n")
 
-    print(f"Location: {location['name']}")
-    print(f"Coordinates: {location['latitude']}, {location['longitude']}")
-    print(f"Conditions: {weather['weather'][0]['description']}")
-    print(f"Temperature: {weather['main']['temp']} °C")
-    print(f"Wind speed: {weather['wind']['speed']} m/s")
+    print(f"Location: {report['location']}")
+    print(f"Coordinates: {report['latitude']}, {report['longitude']}")
+    print(f"Conditions: {report['conditions']}")
+    print(f"Temperature: {report['temperature']}")
+    print(f"Wind speed: {report['wind_speed']}")
+    print(f"Rainfall: {report['rainfall']}")
+    print(f"Observed at: {report['observed_at']}")
+    print(f"Risk level: {report['risk_level']}")
+    for reason in report["risk_reasons"]:
+        print(f"- {reason}")
     print("Both API checks passed.")
 
 
