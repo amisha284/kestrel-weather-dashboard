@@ -1,8 +1,23 @@
-## Introduction and Client Context
-Kestrel Data is a small-scale logistics consultancy that advises their clients who are logistic businesses on the weather patterns and which routes are at a risk of delay. At the moment they are doing everything manually. They gather information and analyse it by hand and write up their findings which is an extremely slow and hard-to-scale process. They requested a prototype from us that pulls live weather data, and risk scores it so the consultants can see how the weather conditions like rain, wind, or severe weather might impact freight lanes and cause delays. Their long-term goal includes providing an API to the client so they could eventually access by themselves instead of waiting for the report. We also had to ensure the codebase is completely transparent so Deb, their internal operations lead, can maintain it. We chose modular Python and FastAPI as it aligns with their future goal of offering a standalone commercial API.
+## Business Value and Expected Benefits
 
-## Project Approach and Team Dynamics
-We only had two weeks to complete this project, so instead of relying on daily meetings, we worked on our own with each person completing a milestone and the next person continuing the work. We studied their needs and turned their requirements into Trello cards we could follow to ensure we knew what comes up next and what to build. We also used GitHub to keep the code intact during handovers, and since we had the main branch protected no one could accidentally break the working app while it was their turn.
+### Improved Decision-Making
 
-## Preliminary Reflections and Learning Insights
-In the beginning, I assumed we would need to build a complex frontend using JavaScript, but after studying the needs of Kestrel, I realised it was more important to ensure their own staff can maintain the system. Using Python and server-built web pages made setting up and running the app a much smoother process. My biggest learning through this project as the Architect was to ensure the folders are tidy, codes are clear and keeping them separate mattered more than bulking up on features and it takes much more dedication and discipline to maintain
+The proposed Kestrel Data Weather Dashboard aims to improve business decision-making by providing users with a centralised platform for accessing weather information and risk analysis. By integrating external data sources into a browser-based application, the solution is intended to reduce the need to consult multiple websites or manually interpret weather information. This could help users identify potentially disruptive weather conditions and make more informed operational decisions.
+
+### Operational Efficiency
+
+A key expected benefit of the dashboard is improved operational efficiency. Automated retrieval and presentation of weather data could reduce repetitive manual tasks and allow staff to focus on interpreting information rather than collecting it. The planned use of Python, FastAPI and modular software components also supports a more structured development approach. Clear separation between application logic, external integrations and the user interface may simplify maintenance and future improvements.
+
+### Accessibility and User Experience
+
+The dashboard is designed to provide an accessible browser-based interface for users with different levels of technical experience. This is particularly important for Kestrel Data because the solution should remain understandable and manageable after the development team completes the project. A clear interface, supporting user documentation and appropriate error messages can reduce the learning effort required for new users.
+
+The planned user manual will provide step-by-step instructions for accessing the application, understanding dashboard outputs and troubleshooting common issues. These resources are expected to improve user independence and reduce reliance on the original developers.
+
+### Long-Term Business Value
+
+The proposed application also offers potential long-term value through its modular architecture and integration capabilities. A well-structured Python codebase can support the addition of new external data services, analytical features and visualisations as business requirements evolve. Automated testing and documented development processes can further improve reliability and make future modifications easier to manage.
+
+However, these benefits depend on successful API integration, accurate data processing, appropriate error handling and satisfactory testing. At the current prototype stage, the application demonstrates the basic web interface, while the operational benefits remain anticipated rather than verified.
+
+Overall, the Kestrel Data Weather Dashboard is intended to deliver a more efficient, accessible and maintainable approach to weather-related information and risk assessment. Its business value will be strengthened by completing the external integrations, validating the accuracy of the displayed information and providing clear documentation for future users and maintainers.
