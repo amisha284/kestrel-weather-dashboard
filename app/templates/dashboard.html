@@ -9,15 +9,57 @@
 <body>
     <main class="container">
         <h1>Kestrel Data Dashboard</h1>
-        <article>
-            <header>System Status</header>
-            <p><strong>Status:</strong> {{ data.status }}</p>
-            <p>{{ data.message }}</p>
+        <p>Check current weather and potential disruption factors for a location.</p>
+
+        <form action="/" method="get">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" value="{{ location }}"
+                   placeholder="Perth, Australia" maxlength="256" required
+                   aria-describedby="location-help">
+            <small id="location-help">Include a country to help find the right place.</small>
+            <button type="submit">Check weather</button>
+        </form>
+
+        {% if error %}
+        <article role="alert">
+            <h2>Unable to load weather</h2>
+            <p>{{ error }}</p>
         </article>
-        <article>
-            <header>Weather Risk Analysis (API Pending)</header>
-            <p><em>Waiting for the Integrator to connect the data feeds...</em></p>
-        </article>
+        {% elif report %}
+        <section aria-labelledby="report-location">
+            <h2 id="report-location">{{ report.location }}</h2>
+            <p>Coordinates: {{ report.latitude }}, {{ report.longitude }}</p>
+            <div class="grid">
+                <article>
+                    <h3>Current weather</h3>
+                    <dl>
+                        <dt>Conditions</dt>
+                        <dd>{{ report.conditions }}</dd>
+                        <dt>Temperature</dt>
+                        <dd>{{ report.temperature }}</dd>
+                        <dt>Wind speed</dt>
+                        <dd>{{ report.wind_speed }}</dd>
+                        <dt>Hourly rainfall</dt>
+                        <dd>{{ report.rainfall }}</dd>
+                        <dt>Observed at</dt>
+                        <dd>{{ report.observed_at }}</dd>
+                    </dl>
+                </article>
+                <article>
+                    <h3>Weather risk: {{ report.risk_level }}</h3>
+                    <ul>
+                        {% for reason in report.risk_reasons %}
+                        <li>{{ reason }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p><small>Prototype assessment based on wind, rainfall and
+                    thunderstorms at this location.</small></p>
+                </article>
+            </div>
+        </section>
+        {% else %}
+        <p>Enter a location above to load its current weather report.</p>
+        {% endif %}
     </main>
 </body>
 </html>

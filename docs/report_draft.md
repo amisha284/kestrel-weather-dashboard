@@ -1,8 +1,50 @@
 ## Introduction and Client Context
-Kestrel Data is a small-scale logistics consultancy that advises their clients who are logistic businesses on the weather patterns and which routes are at a risk of delay. At the moment they are doing everything manually. They gather information and analyse it by hand and write up their findings which is an extremely slow and hard-to-scale process. They requested a prototype from us that pulls live weather data, and risk scores it so the consultants can see how the weather conditions like rain, wind, or severe weather might impact freight lanes and cause delays. Their long-term goal includes providing an API to the client so they could eventually access by themselves instead of waiting for the report. We also had to ensure the codebase is completely transparent so Deb, their internal operations lead, can maintain it. We chose modular Python and FastAPI as it aligns with their future goal of offering a standalone commercial API.
+
+Kestrel Data needs a browser application that reduces manual weather checks and
+helps staff identify potential disruption factors. The prototype searches one
+location and displays current weather with a simple risk assessment. Python
+supports the client's maintenance needs, while a commercial API remains a future
+possibility.
 
 ## Project Approach and Team Dynamics
-We only had two weeks to complete this project, so instead of relying on daily meetings, we worked on our own with each person completing a milestone and the next person continuing the work. We studied their needs and turned their requirements into Trello cards we could follow to ensure we knew what comes up next and what to build. We also used GitHub to keep the code intact during handovers, and since we had the main branch protected no one could accidentally break the working app while it was their turn.
+
+The team divided work into foundation, integration, testing and handover stages.
+Trello tracked requirements and progress, while GitHub supported version control
+and developer handovers. Protected branches require changes to pass through a
+pull request before entering the main branch.
+
+## Software Architecture and Technical Design
+
+FastAPI handles location searches, Jinja2 renders HTML, and Pico CSS provides the
+layout. The GET search form calls `get_weather_report()`, which coordinates the
+backend without a separate JavaScript application.
+
+`MapboxClient` converts a location name into coordinates. `WeatherClient` uses
+these coordinates to retrieve current conditions from OpenWeatherMap. These are
+the two external integrations; risk calculations run locally.
+
+Both clients inherit request handling from `BaseClient`. Its internal credential
+attribute demonstrates Python's encapsulation convention. Shared validation
+checks required weather fields, while each class has a clear responsibility.
+
+`RiskEngine` applies wind, rainfall and thunderstorm thresholds, returning Low,
+Medium or High with reasons. The highest triggered level wins. These are
+prototype assumptions rather than validated predictions of freight delays.
+`DataFormatter` adds units and formats observation time in UTC. Missing rainfall
+displays “Not reported”; missing timestamps display “Unavailable”.
+
+Credentials come from environment variables or an ignored `.env` file. Requests
+have ten-second timeouts, and `APIError` produces readable messages without
+exposing keys. Jinja2 escapes displayed text. Focused tests use mocked responses
+to check API handling, risk boundaries, formatting and dashboard behaviour.
+Live provider verification requires configured credentials. Setup and endpoint
+details are documented separately; login systems and route-wide analysis remain
+outside this prototype.
 
 ## Preliminary Reflections and Learning Insights
-In the beginning, I assumed we would need to build a complex frontend using JavaScript, but after studying the needs of Kestrel, I realised it was more important to ensure their own staff can maintain the system. Using Python and server-built web pages made setting up and running the app a much smoother process. My biggest learning through this project as the Architect was to ensure the folders are tidy, codes are clear and keeping them separate mattered more than bulking up on features and it takes much more dedication and discipline to maintain
+
+Initially, I expected a complex JavaScript frontend. Using Python and
+server-rendered pages showed me that maintainability mattered more than extra
+features. Clear folders, small classes and readable code also made handovers
+easier. Future work should validate the risk thresholds against operational data
+before expanding the functionality.
