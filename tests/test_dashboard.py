@@ -1,12 +1,14 @@
-"""Two focused checks for dashboard rendering and error messages."""
-
+from fastapi.testclient import TestClient
+from app.main import app
 import unittest
 from unittest.mock import patch
-
 from fastapi import Request
-
 from app.api_clients import APIError
 from app.main import read_dashboard
+
+client = TestClient(app)
+
+"""Two focused checks for dashboard rendering and error messages."""
 
 
 class DashboardTests(unittest.TestCase):
@@ -57,3 +59,33 @@ class DashboardTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+def test_homepage_status_code():
+    """TC01: Homepage should return HTTP 200."""
+    response = client.get("/")
+    assert response.status_code == 200
+
+
+def test_dashboard_title():
+    """TC02: Dashboard should display its title."""
+    response = client.get("/")
+    assert "Kestrel Data Dashboard" in response.text
+
+
+def test_system_status():
+    """TC03: Dashboard should display system status."""
+    response = client.get("/")
+    assert "System Online" in response.text
+
+
+def test_weather_analysis_section():
+    """TC04: Weather analysis section should exist."""
+    response = client.get("/")
+    assert "Weather Risk Analysis" in response.text
+
+
+def test_invalid_route():
+    """TC05: Invalid routes should return HTTP 404."""
+    response = client.get("/invalid-page")
+    assert response.status_code == 404
+
