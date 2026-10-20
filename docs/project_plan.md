@@ -4,11 +4,11 @@
 This project builds a browser dashboard for Kestrel Data to search a location, retrieve current weather, and view a simple weather-risk assessment. It reduces the need to gather and format weather information manually. The delivered prototype assesses a single location; route-wide analysis and predictions of freight delays remain outside this version.
 
 ## 1. Project Scope and Deliverables
-** Target Audience:** This platform is built for the internal operations team (Deb, Priya and Marcus) to be accessed directly from their browser without needing any new software.
-**Core Functionality:** Mapbox resolves a searched location, OpenWeatherMap supplies current conditions, and local Python rules return Low, Medium or High risk with readable reasons.
-**Technology Stack:**Python 3.11+, and FastAPI is used for the backend architecture while Jinja2 is used for server-side HTML templating and Pico CSS is used for lightweight frontend.
-** Out of Scope:** We made a decision to drop user logins and session management due to the short timeframe we had for delivery.
-**Final Deliverables:**A comprehensive handover report detailing API integration strategy, a GitHub repository containing Python and FastAPI codebase. 
+Target Audience: This platform is built for the internal operations team (Deb, Priya and Marcus) to be accessed directly from their browser without needing any new software.
+Core Functionality: Mapbox resolves a searched location, OpenWeatherMap supplies current conditions, and local Python rules return Low, Medium or High risk with readable reasons.
+Technology Stack:Python 3.11+, and FastAPI is used for the backend architecture while Jinja2 is used for server-side HTML templating and Pico CSS is used for lightweight frontend.
+Out of Scope: We made a decision to drop user logins and session management due to the short timeframe we had for delivery.
+Final Deliverables:A comprehensive handover report detailing API integration strategy, a GitHub repository containing Python and FastAPI codebase. 
 
 
 ##Requirements and Feature Implementation Matrix
