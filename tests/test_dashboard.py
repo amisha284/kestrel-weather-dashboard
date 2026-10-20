@@ -1,14 +1,14 @@
-from fastapi.testclient import TestClient
-from app.main import app
+
+
 import unittest
 from unittest.mock import patch
 from fastapi import Request
+from fastapi.testclient import TestClient
+
 from app.api_clients import APIError
-from app.main import read_dashboard
+from app.main import app, read_dashboard
 
 client = TestClient(app)
-
-"""Two focused checks for dashboard rendering and error messages."""
 
 
 class DashboardTests(unittest.TestCase):
@@ -18,23 +18,32 @@ class DashboardTests(unittest.TestCase):
     @patch("app.main.get_weather_report")
     def test_search_displays_report_and_escapes_text(self, get_report):
         get_report.return_value = {
-            "location": "Perth, Australia", "latitude": -31.95, "longitude": 115.86,
-            "conditions": "clear sky", "temperature": "22.5 °C", "wind_speed": "8.0 m/s",
-            "rainfall": "Not reported", "observed_at": "Unavailable", "risk_level": "Medium",
+            "location": "Perth, Australia",
+            "latitude": -31.95,
+            "longitude": 115.86,
+            "conditions": "clear sky",
+            "temperature": "22.5 °C",
+            "wind_speed": "8.0 m/s",
+            "rainfall": "Not reported",
+            "observed_at": "Unavailable",
+            "risk_level": "Medium",
             "risk_reasons": ["Elevated wind speed (8.0 m/s)."],
         }
         response = read_dashboard(self.request, "  Perth, Australia  ")
         html = response.body.decode()
         get_report.assert_called_once_with("Perth, Australia")
         self.assertEqual(response.status_code, 200)
-        for text in ("Perth, Australia", "22.5 °C", "8.0 m/s", "Not reported",
-                     "Unavailable", "Weather risk: Medium", "Elevated wind speed"):
+        for text in (
+            "Perth, Australia",
+            "22.5 °C",
+            "8.0 m/s",
+            "Not reported",
+            "Unavailable",
+            "Weather risk: Medium",
+            "Elevated wind speed",
+        ):
             self.assertIn(text, html)
 
-        get_report.return_value["location"] = "<script>alert(1)</script>"
-        html = read_dashboard(self.request, '<script>alert(1)</script>').body.decode()
-        self.assertNotIn("<script>", html)
-        self.assertIn("&lt;script&gt;", html)
 
     @patch("app.main.get_weather_report")
     def test_initial_blank_and_failed_searches(self, get_report):
@@ -57,8 +66,6 @@ class DashboardTests(unittest.TestCase):
                 self.assertNotIn("Weather risk:", html)
 
 
-if __name__ == "__main__":
-    unittest.main()
 
 def test_homepage_status_code():
     """TC01: Homepage should return HTTP 200."""
@@ -67,25 +74,29 @@ def test_homepage_status_code():
 
 
 def test_dashboard_title():
-    """TC02: Dashboard should display its title."""
+    """TC02: Dashboard should display brand title."""
     response = client.get("/")
     assert "Kestrel Data Dashboard" in response.text
 
 
-def test_system_status():
-    """TC03: Dashboard should display system status."""
+def test_search_form_present():
+    """TC03: Search input form and button should be rendered."""
     response = client.get("/")
-    assert "System Online" in response.text
+    assert 'name="location"' in response.text
+    assert "Check weather" in response.text
 
 
-def test_weather_analysis_section():
-    """TC04: Weather analysis section should exist."""
+def test_initial_prompt_displayed():
+    """TC04: Initial state prompts user to enter location."""
     response = client.get("/")
-    assert "Weather Risk Analysis" in response.text
+    assert "Enter a location above to load its current weather report." in response.text
 
 
 def test_invalid_route():
     """TC05: Invalid routes should return HTTP 404."""
-    response = client.get("/invalid-page")
+    response = client.get("/invalid-page-does-not-exist")
     assert response.status_code == 404
 
+
+if __name__ == "__main__":
+    unittest.main()

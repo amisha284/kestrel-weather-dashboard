@@ -1,89 +1,108 @@
-# Kestrel Data Weather Dashboard
-## User Manual
+# Kestrel Data Weather Risk Dashboard — User Manual
 
-**Version:** 1.0 (Draft)  
-**Prepared for:** Kestrel Data  
-**Intended Users:** Marcus, Deb, and authorised staff
+**Version:** 1.0 (Final Release)  
+**Target Audience:** Deb (Office & Operations Manager), Priya, Marcus, and logistics operational staff.
 
-### 1. Introduction
+---
 
-The Kestrel Data Weather Dashboard is a Python-based web application designed to support access to weather-related information and analysis.
+## 1. Introduction
 
-This manual provides instructions for accessing and using the application, understanding its outputs, and responding to common technical issues.
+The **Kestrel Data Weather Risk Dashboard** is a browser-based decision-support tool. It eliminates manual spreadsheet searches by aggregating live geographical and atmospheric data into an automated risk assessment for any requested location.
 
-The application is currently under development. Instructions for the final weather analysis features will be updated following API integration and testing.
+The application requires zero client installation for end-users and runs entirely in modern web browsers.
 
-### 2. System Requirements
+---
 
-The application is designed to be accessed through a web browser.
+## 2. System Architecture & Prerequisites
 
-For local development and maintenance, the following components are required:
+For local operations and internal hosting:
+* **Operating System:** Cross-platform (macOS, Windows 10/11, Linux)
+* **Python Runtime:** Python 3.11 or newer
+* **Network Access:** Outbound HTTPS access to:
+  * Mapbox Geocoding API (`https://api.mapbox.com`)
+  * OpenWeatherMap API (`https://api.openweathermap.org`)
 
-- Python and the project dependencies
-- A supported web browser
-- Internet access for external API services
-- Access to the project repository
+---
 
-### 3. Getting Started
-![alt text](image.png)
-Figure 1. Kestrel Data Dashboard prototype showing
-the system status and weather analysis placeholder.
+## 3. Installation & Configuration (For Deb / Technical Admin)
 
-**Step 1: Access the application**
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/amisha284/kestrel-weather-dashboard.git
+   cd kestrel-weather-dashboard
+   ```
 
-Open the application URL provided by the development team.
+2. **Initialize Python virtual environment:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-For local testing, the application can be accessed at:
+3. **Configure API Credentials:**
+   Copy the `.env.example` file to create a working `.env` file:
+   ```bash
+   cp .env.example .env
+   ```
+   Open `.env` in any text editor and supply your keys:
+   ```ini
+   MAPBOX_ACCESS_TOKEN=your_mapbox_token_here
+   OPENWEATHER_API_KEY=your_openweathermap_key_here
+   ```
+   *(Note: The application will safely alert the user on the dashboard if credentials are missing or expired without leaking secrets).*
 
-`http://127.0.0.1:8000`
+4. **Launch the Dashboard Server:**
+   ```bash
+   python3 -m uvicorn app.main:app --reload --port 8000
+   ```
+   Access the dashboard by navigating to `http://127.0.0.1:8000` in Google Chrome, Safari, Firefox, or Edge.
 
-**Step 2: View the dashboard**
+---
 
-Once the application loads, the main dashboard displays the application title and system status.
+## 4. Using the Dashboard (Step-by-Step)
 
-**Step 3: Check system status**
+![Kestrel Data Dashboard Prototype](images/dashboard_prototype.png)
+*Figure 1: Kestrel Data Browser Interface.*
 
-Review the System Status section to confirm that the dashboard has loaded.
+### Step 1: Search a Location
+1. In the **Location** field, type the city, regional hub, or distribution center.
+2. *Best Practice:* Include the country name for disambiguation (e.g., `Perth, Australia` rather than `Perth`; `Chicago, US` rather than `Chicago`).
+3. Click **Check weather** (or press `Enter`).
 
-**Step 4: Access weather analysis**
+### Step 2: Interpreting the Weather Report
+When the location is resolved, the dashboard presents two structured cards:
 
-The Weather Risk Analysis section is currently a placeholder. Detailed instructions will be added once the external data integrations are completed.
+1. **Current Weather Data:**
+   * **Location & Coordinates:** Displays the standardized address resolved by Mapbox along with precise latitude and longitude.
+   * **Conditions & Temperature:** Atmospheric state (e.g., overcast clouds, light rain) and ambient temperature in °C.
+   * **Wind Speed:** Surface velocity in meters per second (m/s).
+   * **Hourly Rainfall:** Precipitation volume in mm/h (displays *"Not reported"* if no recent rainfall is recorded).
+   * **Observation Timestamp:** The official UTC timestamp of the measurement.
 
-### 4. Understanding the Dashboard
+2. **Weather Risk Analysis:**
+   The dashboard calculates a composite risk rating:
+   * **LOW RISK (Green):** Normal operational baseline. No hazardous factors detected.
+   * **MEDIUM RISK (Yellow):** Caution advised. Triggered by moderate wind (≥ 8 m/s) or sustained rainfall (≥ 2.5 mm/h).
+   * **HIGH RISK (Red):** Disruption hazard. Triggered by severe wind (≥ 15 m/s), heavy rainfall (≥ 7.5 mm/h), or active thunderstorm codes (200–299).
+   * **Reasoning Bullet Points:** Outlines the explicit factors causing an elevated risk rating.
 
-**System Status**
+---
 
-The System Status section displays the current operational state of the application. In the prototype, the message "System Online – Awaiting API" indicates that the web interface is running but external data integrations have not yet been completed.
+## 5. Troubleshooting & Error Messages
 
-**Weather Risk Analysis**
+| Displayed Message | Cause | Resolution |
+| :--- | :--- | :--- |
+| *"Enter a location name, such as Perth, Australia."* | Blank or whitespace-only search submitted. | Provide a valid city or address string. |
+| *"No matching location was found. Try adding a country name."* | Mapbox could not geocode the input. | Check spelling or append state/country (e.g., `Freo, WA, Australia`). |
+| *"Set MAPBOX_ACCESS_TOKEN / OPENWEATHER_API_KEY in your environment..."* | Credentials missing from `.env`. | Verify keys exist in `.env` and restart Uvicorn. |
+| *"The API rejected the credentials. Check your key..."* | Invalid or expired API token. | Re-issue API keys from the provider portal. |
+| *"The API request limit was reached."* | Free-tier request quota exceeded (HTTP 429). | Wait 60 seconds or upgrade provider rate limits. |
+| *"The API request timed out."* | Network delay exceeding 10 seconds. | Check internet connectivity and retry. |
 
-The Weather Risk Analysis section is reserved for weather-related information and risk assessment. In the current prototype, this section displays a placeholder message while API integration is pending.
+---
 
-### 5. Troubleshooting
+## 6. Developer Endpoints & Handover
 
-| Issue | Possible Cause | Recommended Action |
-|---|---|---|
-| Dashboard does not load | Application server is unavailable | Contact the system administrator |
-| Browser displays an error | Server or network issue | Refresh the page and retry |
-| Weather analysis is unavailable | API integration is incomplete or unavailable | Contact the development team |
-| Data is not updating | External data service issue | Retry later or contact the administrator |
-
-### 6. Maintenance and Support
-
-Kestrel Data's designated technical administrator should maintain the application and its dependencies.
-
-The development team will provide the GitHub repository and supporting documentation to assist future maintenance.
-
-### 7. Future Updates
-
-This manual will be updated when the application is finalised, including:
-
-- Detailed instructions for user inputs
-- Weather analysis and risk interpretation
-- Screenshots of the completed interface
-- Error messages and troubleshooting
-- Instructions for any additional features
-
-### 8. Document Status
-
-**Draft — Pending final application integration and user acceptance testing.**
+FastAPI automatically generates live interactive documentation for internal developers:
+* **Interactive Swagger UI:** `http://127.0.0.1:8000/docs`
+* **OpenAPI Specification:** `http://127.0.0.1:8000/openapi.json`
