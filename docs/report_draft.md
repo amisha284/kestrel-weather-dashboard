@@ -111,7 +111,7 @@ The team collaboratively agrees upon the following breakdown of project contribu
 | Student Name | Student ID | Agreed Contribution | Primary Deliverables & Responsibilities |
 | :--- | :--- | :---: | :--- |
 | **Amisha** | 21917398 | **33.3%** | Repository initialization, project plan formulation, FastAPI scaffolding, PR reviews, merge management. |
-| **Faisal** | 20055380 | **33.3%** | Mapbox & OpenWeatherMap API clients, `RiskEngine`, `DataFormatter`, unit tests, CLI script. |
+| **Faisal** | 22133577 | **33.3%** | Mapbox & OpenWeatherMap API clients, `RiskEngine`, `DataFormatter`, unit tests, CLI script. |
 | **Jimin Lee**| 21458920 | **33.3%** | Business value analysis, comprehensive QA test report, user manual, interface documentation. |
 
 ---
