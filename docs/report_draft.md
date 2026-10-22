@@ -3,7 +3,7 @@
 
 **Course:** ISYS3015 — Business Application Development  
 **Client:** Marcus & Priya, Kestrel Data  
-**Team Members:** Amisha (Lead Architect), Faisal (Backend Integration Engineer), Jimin Lee (QA & Technical Writer)  
+**Team Members:** Amisha (Lead Architect), Faisal (Backend Integration Engineer), Jimin Lee (QA & Technical Writer),  Xuan Tran (Producer)  
 **Repository:** `https://github.com/amisha284/kestrel-weather-dashboard`  
 
 ---
@@ -102,16 +102,23 @@ During the sprint, two deliberate scope adjustments were made:
 ### Quality Assurance & Documentation Reflection (Jimin Lee)
 "Leading quality assurance reinforced the lesson that automated test suites are only as reliable as the environments and code revisions against which they are integrated. Initially, I developed test cases against an early prototype shell, which caused discrepancies when integrated against Faisal's live backend. Re-aligning the test suite to validate mock API payloads, boundary conditions, and HTML escaping taught me the immense value of continuous test-driven development. Writing the user manual also underscored that technical capabilities mean little if the operational user cannot configure the system independently. Providing clear step-by-step guidance on `.env` setup and input formatting ensures Deb can deploy the software with complete confidence. What didn't work well was writing test cases in isolation without inspecting backend commits concurrently. In future projects, I would establish shared mock interfaces and contract definitions on Day 1 to ensure documentation, automated testing, and backend development remain perfectly synchronized."
 
+### Producer & Presentation Reflection (Xuan Tran)
+My Producer role focused on translating the application’s architecture, API integrations and QA evidence into a structured demonstration and the team’s technical handover. With AI assistance, I prepared presentation scripts connecting the browser workflow to the API clients and risk-analysis components. This highlighted the importance of traceability between demonstrated behaviour, repository code and test evidence, particularly the distinction between mocked tests and live API verification. In future projects, I would agree demonstration scenarios and evidence requirements earlier to reduce inconsistencies. Recording is planned for 22 October 2026; rehearsal, recording, editing and access checks remain pending.
+
 ---
 
 ## 8. Group Contribution Statement
 
-The team collaboratively agrees upon the following breakdown of project contributions:
+The team collaboratively agrees upon the following breakdown of project contributions, resulting in 25% work breakdown for each:
 
 | Student Name | Student ID | Agreed Contribution | Primary Deliverables & Responsibilities |
 | :--- | :--- | :---: | :--- |
-| **Amisha** | 21917398 | **33.3%** | Repository initialization, project plan formulation, FastAPI scaffolding, PR reviews, merge management. |
-| **Faisal** | 22133577 | **33.3%** | Mapbox & OpenWeatherMap API clients, `RiskEngine`, `DataFormatter`, unit tests, CLI script. |
-| **Jimin Lee**| 22557782| **33.3%** | Business value analysis, comprehensive QA test report, user manual, interface documentation. |
+| **Amisha** | 21917398 | **25%** | Repository initialization, project plan formulation, FastAPI scaffolding, PR reviews, merge management. |
+| **Faisal** | 22133577 | **25%** | Mapbox & OpenWeatherMap API clients, `RiskEngine`, `DataFormatter`, unit tests, CLI script. |
+| **Jimin Lee**| 22557782| **25%** | Business value analysis, comprehensive QA test report, user manual, interface documentation. |
+| **Xuan Tran** | 19479356 | **25%** | Presentation scripts, timing, recording coordination, Producer records and submission preparation. |
 
 ---
+
+## 9. AI Disclosure
+Gemini supported coding in the team's VS Code/GitHub workflow. ChatGPT/Codex supported scripts, Producer records, auditing and proposed local test/documentation corrections. AI-supported outputs require team review; mocked tests do not establish live provider operation.
