@@ -115,8 +115,8 @@ The team agreed to contribute 25% each, totalling 100%.
 | Student Name | Student ID | Agreed Contribution | Primary Deliverables & Responsibilities |
 | :--- | :--- | :---: | :--- |
 | **Amisha** | 21917398 | **25%** | Repository initialization, project plan formulation, FastAPI scaffolding, PR reviews, merge management. |
-| **Faisal** | 20055380 | **25%** | Mapbox & OpenWeatherMap API clients, `RiskEngine`, `DataFormatter`, unit tests, CLI script. |
-| **Jimin Lee** | 21458920 | **25%** | Business value analysis, comprehensive QA test report, user manual, interface documentation. |
+| **Faisal** | 22133577 | **25%** | Mapbox & OpenWeatherMap API clients, `RiskEngine`, `DataFormatter`, unit tests, CLI script. |
+| **Jimin Lee** | 22557782 | **25%** | Business value analysis, comprehensive QA test report, user manual, interface documentation. |
 | **Xuan Tran** | 19479356 | **25%** | Presentation scripts, timing, recording coordination, Producer records and submission preparation. |
 
 ---
