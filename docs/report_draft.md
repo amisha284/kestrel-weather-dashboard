@@ -112,6 +112,6 @@ The team collaboratively agrees upon the following breakdown of project contribu
 | :--- | :--- | :---: | :--- |
 | **Amisha** | 21917398 | **33.3%** | Repository initialization, project plan formulation, FastAPI scaffolding, PR reviews, merge management. |
 | **Faisal** | 22133577 | **33.3%** | Mapbox & OpenWeatherMap API clients, `RiskEngine`, `DataFormatter`, unit tests, CLI script. |
-| **Jimin Lee**| 21458920 | **33.3%** | Business value analysis, comprehensive QA test report, user manual, interface documentation. |
+| **Jimin Lee**| 22557782| **33.3%** | Business value analysis, comprehensive QA test report, user manual, interface documentation. |
 
 ---
